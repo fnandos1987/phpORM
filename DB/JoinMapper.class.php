@@ -9,6 +9,7 @@ class JoinMapper {
     const JOIN = 'JOIN';
     const LEFT_JOIN = 'LEFT JOIN';
     const RIGHT_JOIN = 'RIGHT JOIN';
+    const CROSS_JOIN = 'CROSS JOIN';
 
     private $name;
     private $persistenceKey; //persistência de onde parte a chave
@@ -16,8 +17,9 @@ class JoinMapper {
     private $fields = array(); // em caso de não poder ser join natural mapeia as colunas
     private $aAdditionalConditions = array(); //armazena condições com valores fixos
 
-    public function __construct($sName, $sAlias = false) {
+    public function __construct($sName, $sPersistenceKey, $sAlias = false) {
         $this->name = $sName;
+        $this->persistenceKey = $sPersistenceKey;
         $this->aliasJoin = $sAlias;
     }
 
@@ -27,22 +29,6 @@ class JoinMapper {
      */
     public function setName($param) {
         $this->name = $param;
-    }
-
-    /**
-     * Método que mapeia a persistência referente ao join
-     * @param string $sPers
-     */
-    public function setPersistence($sPers) {
-        $this->persistenceKey = $sPers;
-    }
-
-    /**
-     * Retorna a persistência mapeada
-     * @return string
-     */
-    public function getPersistence() {
-        return $this->persistenceKey;
     }
 
     /**
@@ -103,7 +89,7 @@ class JoinMapper {
      * @param string $sTypeJoin
      * @return string
      */
-    public function getScriptJoin(PersistenceMapper $oAtual, $sTypeJoin = self::JOIN) {
+    public function getScriptJoin(PersistenceMapper $oAtual, $sTypeJoin = self::LEFT_JOIN) {
         $this->persistenceKey = $this->instantiatePersistence();
         $this->persistenceReference = $oAtual;
         $oJoin = new JoinBuilder($this->persistenceKey->getTableName(false), $this->persistenceReference->getTableName(false), $this->aliasJoin, $sTypeJoin);
@@ -130,43 +116,6 @@ class JoinMapper {
         
         return $oJoin->dump();
     }
-
-    
-//    public function getScriptJoinold(PersistenceMapper $oAtual, $sTypeJoin = self::JOIN) {
-//        $this->persistenceReference = $oAtual;
-//        $this->persistenceKey = $this->instantiatePersistence();
-//
-//        $sAlias = ($this->aliasJoin) ? $this->aliasJoin : $this->persistenceKey->getTableName(false);
-//
-//        $sSaida = "{$sTypeJoin} {$this->persistenceKey->getTableName()} {$this->aliasJoin} ";
-//        $aPar = array();
-//        if (!count($this->fields)) {
-//            foreach ($this->persistenceKey->getMapping() as $oMap) {
-//                if ($oMap->getTableKey()) {
-//                    $aPar[] = "{$this->persistenceReference->getTableName(false)}.{$oMap->getNameDb()} = {$sAlias}.{$oMap->getNameDb()}";
-//                }
-//            }
-//        } else {
-//            foreach ($this->fields as $sKey => $sColumn) {
-//                $aPar[] = "{$this->persistenceReference->getTableName(false)}.{$sKey} = {$sAlias}.{$sColumn}";
-//            }
-//        }
-//
-//        if (count($this->aAdditionalConditions)) {
-//            foreach ($this->aAdditionalConditions as $oCondiction) {
-//                if ($this->persistenceReference->getColumnByNameDb($oCondiction->field)) {
-//                    $aPar[] = "{$this->persistenceReference->getTableName(false)}.{$oCondiction->field} {$oCondiction->operator} '{$oCondiction->value}'";
-//                }
-//            }
-//        }
-//
-//        if (!count($aPar)) {
-//            throw new Exception('Ocorreu um erro ao recuperar o script do join ' . $this->name);
-//        }
-//
-//        $sSaida .= 'ON ' . implode(' AND ', $aPar);
-//        return $sSaida;
-//    }
 
     /**
      * Instância a persistencia origem e retorna a instância
