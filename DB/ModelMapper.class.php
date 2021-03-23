@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe que controla o mapeamento das colunas nas persistências
  * @author fernando.schwambach

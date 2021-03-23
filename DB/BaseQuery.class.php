@@ -1,5 +1,6 @@
 <?php
-include_once '../Util/ModelUtil.class.php';
+namespace Db;
+use PDO;
 /**
  * Classe base para as classes de consulta, implementa os métodos comuns a todas elas
  * @author fernando.schwambach

@@ -1,5 +1,6 @@
 <?php
-
+namespace Util;
+use Db\Transaction, Db\LoggerTXT;
 /**
  * Classe base para interação sobre registros vindos de selects no banco de dados
  * @author fernando.schwmbach
@@ -13,14 +14,14 @@ abstract class QueryIterator implements Iterator {
     protected function executeStmt() {
         try {
             $this->Query->execute();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addLog($e->getMessage());
         }
     }
 
     abstract protected function fetchObject();
 
-    public function __construct(PDOStatement $stmt) {
+    public function __construct(\PDOStatement $stmt) {
         $this->Query = $stmt;
     }
 

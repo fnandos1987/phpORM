@@ -1,7 +1,6 @@
 <?php
-include_once '../Util/QueryIterator.class.php';
-include_once '../Util/ModelUtil.class.php';
-
+namespace Db;
+use PDOStatement, Util\ModelUtil, Util\QueryIterator;
 /**
  * Classe interadora de modelos
  * @author fernando.schwmbach

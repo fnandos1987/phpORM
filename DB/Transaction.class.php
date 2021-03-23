@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  *  Classe que gerencia transações com o banco de dados
  */
@@ -9,11 +9,9 @@ final class Transaction {
     private static $logger; //objeto de log
 
     /**
-     *  haverá apenas uma instância de Transaction por isso seu construtor será private
+     *  Deve haver apenas uma instância de Transaction
      */
-    private function __construct() {
-        
-    }
+    private function __construct() {}
 
     /**
      *  Abre uma transação e por consequência uma conexão ao BD
@@ -27,8 +25,8 @@ final class Transaction {
                 self::$conn->beginTransaction();
                 self::$logger = null;
             }
-        } catch (PDOException $ePdo) {
-            throw new Exception($ePdo->getMessage());
+        } catch (\PDOException $ePdo) {
+            throw new \Exception($ePdo->getMessage());
         }
     }
 

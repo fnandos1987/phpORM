@@ -1,5 +1,5 @@
 <?php
-
+namespace Util;
 /**
  * Classe para manipulação de modelos
  * @author fernando.schwambach
@@ -40,7 +40,7 @@ class ModelUtil {
             if (method_exists($oObject, $sMethod)) {
                 return call_user_func_array(array($oObject, $sMethod), $aArgs);
             } else {
-                throw new Exception('Metodo ' . $sMethod . ' não existente na classe ' . get_class($oObject));
+                throw new \Exception('Metodo ' . $sMethod . ' não existente na classe ' . get_class($oObject));
             }
         }
     }

@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe para manipulação de instrucões UPDATE no banco de dados
  */
@@ -51,7 +51,7 @@ final class SqlUpdate extends SqlInstruction {
         }
         
         if(!count($set)){
-            throw new Exception('Nenhuma coluna para alteração identificada na instrução!');            
+            throw new \Exception('Nenhuma coluna para alteração identificada na instrução!');            
         }
         
         $this->sql .= " SET " . implode(', ', $set);

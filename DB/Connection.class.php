@@ -1,4 +1,6 @@
 <?php
+namespace Db;
+use PDO;    
 
 /**
  *  Classe que gerencia conexões com BDs através de arquivos de configuração
@@ -17,10 +19,10 @@ final class Connection {
      * @param $name = nome do arquivo .ini de configuração
      */
     public static function open() {       
-        try{
+        try {
             //lê o .ini e retorna uma array com as configurações
             $db = parse_ini_file(self::$name);
-        }catch(Exception $e){
+        } catch (\Exception $e) {
             die('Erro ao ler o arquivo de configuração!');
         }
 

@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  *  implementa o algoritmo de LOG em arquivos .txt
  */

@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe para manipulação de instrucões SELECT simples no banco de dados
  */
@@ -33,9 +33,9 @@ final class SqlSelect extends SqlInstruction {
         $this->sql = 'SELECT ';  
         
         //monta string com o nome das colunas
-        if($this->columns[0] != ''){
+        if (count($this->columns)) {
             $this->sql .= implode(', ', $this->columns);
-        }else{
+        } else {
             $this->sql .= '*';
         }
 

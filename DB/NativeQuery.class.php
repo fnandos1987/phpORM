@@ -1,10 +1,10 @@
 <?php
-
+namespace Db;
 /**
  * Classe para montagem e execução de consultas SQL sem o mapeamento ORM de uma persistência
  * @author fernando.schwambach
  */
-class NativeQuery extends BaseQuery{
+class NativeQuery extends BaseQuery {
 
     private $tableName;
     private $aJoins = Array();

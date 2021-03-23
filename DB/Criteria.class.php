@@ -1,4 +1,5 @@
 <?php
+namespace Db;
 
 /**
  *  Classe que provê uma interface para criterios de seleção

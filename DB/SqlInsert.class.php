@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe para manipulação de instrucões INSERT no banco de dados
  */
@@ -38,7 +38,7 @@ final class SqlInsert extends SqlInstruction {
      * @param $criteria = objeto Criteria
      */
     public function setCriteria(Criteria $criteria) {
-        throw new Exception("Não é possível instânciar um critério de " . __CLASS__);
+        throw new \Exception("Não é possível instânciar um critério de " . __CLASS__);
     }
 
     /**
@@ -46,7 +46,7 @@ final class SqlInsert extends SqlInstruction {
      */
     public function getInstruction() {        
         if(!count($this->columnValues)){
-            throw new Exception('Nenhuma coluna para inserção identificada na instrução!');            
+            throw new \Exception('Nenhuma coluna para inserção identificada na instrução!');            
         }
         
         //monta string com os nomes das colunas

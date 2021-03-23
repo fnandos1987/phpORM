@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe base que provê os métodos comuns entre todas as instruções SQL (Select, Insert, Update, Delete)
  */

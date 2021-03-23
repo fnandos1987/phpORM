@@ -1,9 +1,11 @@
 <?php
+namespace Db;
+Use Util\ModelUtil;    
 /**
  * Classe para montagem e execução de consultas SQL usando Joins
  * @author fernando.schwambach
  */
-class QueryWithJoin extends BaseQuery{
+class QueryWithJoin extends BaseQuery {
 
     private $aJoin = Array();
 
@@ -38,7 +40,7 @@ class QueryWithJoin extends BaseQuery{
                     $this->addColumn(implode(', ', $oJoin->getAllColumns()));
                 }
             } else {
-                throw new Exception('Join ' . $sName . ' não mapeado!');
+                throw new \Exception('Join ' . $sName . ' não mapeado!');
             }
         }
     }
@@ -63,7 +65,7 @@ class QueryWithJoin extends BaseQuery{
                 $class = $oJoin->getPersistence();
                 $Persistence = new $class();
             } else {
-                throw new Exception('Join ' . $sClass . ' não mapeado!');
+                throw new \Exception('Join ' . $sClass . ' não mapeado!');
             }
         }
 

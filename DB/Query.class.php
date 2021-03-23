@@ -1,6 +1,6 @@
 <?php
-include_once '../Util/ModelUtil.class.php';
-
+namespace Db;
+use PDO;
 /**
  * Classe para montagem e execução de consultas SQL sem Joins
  * @author fernando.schwambach

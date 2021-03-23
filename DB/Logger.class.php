@@ -1,4 +1,5 @@
 <?php
+namespace Db;
 
 /**
  *  Classe que provê recursos para definição de algoritmos de LOG

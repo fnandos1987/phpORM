@@ -1,38 +1,32 @@
 <?php
-
+namespace Db;
 /**
  * Classe para mapeamento da persistência no banco de dados: schemas, tabelas, foreing keys
- *
  * @author fernando.schwmbach
  */
 class PersistenceMapper {
 
     /**
-     *
      * @var string $schema: esquema do banco de dados se ele suportar
      */
     protected $schema = null;
 
     /**
-     *
      * @var string $tableName: nome da tabela afetada pela persistência 
      */
     protected $tableName;
 
     /**
-     *
      * @var Array $mapping: mapeamentos dos campos da tabela
      */
     protected $mapping = array();
 
     /**
-     *
      * @var Array $join mapeamento de foreing keys
      */
     protected $joins = array();
 
     /**
-     *
      * @var string $Model: configura o modelo vinculado a essa persistência  
      */
     protected $Model;
@@ -55,7 +49,7 @@ class PersistenceMapper {
 
     public function instantiateModel() {
         if (!isset($this->Model)) {
-            throw new Exception('Modelo não definido para ' . get_class($this));
+            throw new \Exception('Modelo não definido para ' . get_class($this));
         }
         return new $this->Model();
     }

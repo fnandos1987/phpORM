@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe para mapeamento de foreing keys
  * @author fernando.schwmbach

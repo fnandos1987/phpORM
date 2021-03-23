@@ -1,4 +1,6 @@
 <?php
+namespace Db;
+
 /**
 *  Classe abstrata para gerenciamento de expressões
 */

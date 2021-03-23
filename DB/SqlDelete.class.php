@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe para manipulação de instrucões DELETE no banco de dados
  */

@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  * Classe facilitadora para criação de joins
  * @author fernando.schwambach

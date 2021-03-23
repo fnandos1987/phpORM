@@ -1,6 +1,6 @@
 <?php
-include_once '../Util/QueryIterator.class.php';
-include_once '../Util/ModelUtil.class.php';
+namespace Db;
+use PDOStatement, Util\QueryIterator, Util\ModelUtil;
 
 /**
  * Classe interadora sobre consultas mapeadas (ex.: cid_codigo as "cidCodigo")

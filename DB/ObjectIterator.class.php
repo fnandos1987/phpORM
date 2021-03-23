@@ -1,11 +1,11 @@
 <?php
-include_once '../Util/QueryIterator.class.php';
-
+namespace Db;
+use PDOStatement, Util\QueryIterator;
 /**
  * Classe interadora sobre objetos stdClass do PHP
  * @author fernando.schwambach
  */
-class ObjectIterator extends QueryIterator{
+class ObjectIterator extends QueryIterator {
     
     public function __construct(PDOStatement $stmt) {
         parent::__construct($stmt);

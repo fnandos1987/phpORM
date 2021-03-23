@@ -1,5 +1,5 @@
 <?php
-
+namespace Db;
 /**
  *  Classe que provê uma interface para filtros de seleção
  */
@@ -107,4 +107,5 @@ class Filter extends Expression {
                 return "{$this->variable} {$this->operator} {$this->value}";
         }
     }
+    
 }

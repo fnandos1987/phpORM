@@ -1,17 +1,6 @@
 <?php
-
-include_once "../Util/FileUtil.class.php";
-FileUtil::includeUtil("ModelUtil");
-
-if (!function_exists('autoLoaderDB')) {
-
-    function autoLoaderDB($class) {
-        FileUtil::includeDb($class);
-    }
-
-}
-spl_autoload_register('autoLoaderDB');
-
+namespace Persistencia;
+use PDO, Exception, Db\Transaction;
 /**
  * Description of Persistence
  *
@@ -35,22 +24,22 @@ abstract class Persistence extends PersistenceMapper {
     }
 
     private function addLog($sEntry) {
-        Transaction::setLogger(new LoggerTXT('../log.txt'));
+        Transaction::setLogger(new \Db\LoggerTXT('../log.txt'));
         Transaction::log($sEntry);
     }
 
     private function createCriteria() {
-        $oCriteria = new Criteria();
+        $oCriteria = new \Db\Criteria();
         foreach ($this->mapping as $oMap) {
             if ($oMap->getTableKey()) {
-                $oCriteria->add(new Filter($oMap->getNameDb(), Filter::IGUAL, ':' . $oMap->getNameDb(), false, true));
+                $oCriteria->add(new \Db\Filter($oMap->getNameDb(), Filter::IGUAL, ':' . $oMap->getNameDb(), false, true));
             }
         }
         return $oCriteria;
     }
 
     public function insert($aDados) {
-        $oInsert = new SqlInsert();
+        $oInsert = new \Db\SqlInsert();
         $oInsert->setEntity($this->getTableName());
         foreach ($this->mapping as $oMap) {
             $oInsert->setRowPrepared($oMap->getNameDb());
@@ -66,20 +55,12 @@ abstract class Persistence extends PersistenceMapper {
                 $stmt->bindValue(':' . $oMap->getNameDb(), null, PDO::PARAM_NULL);
             }
         }
-
-        try {
-            $stmt->execute();
-            Transaction::commit();
-            return true;
-        } catch (Exception $ex) {
-            $this->addLog($ex->getMessage());
-            Transaction::rollback();
-            return false;
-        }
+        
+        return $this->executeStmt($stmt);
     }
 
     public function update($aDados) {
-        $oUpdate = new SqlUpdate();
+        $oUpdate = new \Db\SqlUpdate();
         $oUpdate->setEntity($this->getTableName());
         foreach ($this->mapping as $oMap) {
             if (array_key_exists($oMap->getNameClass(), $aDados)) {
@@ -94,23 +75,15 @@ abstract class Persistence extends PersistenceMapper {
                 $stmt->bindValue(':' . $oMap->getNameDb(), $aDados[$oMap->getNameClass()], $this->bindType($aDados[$oMap->getNameClass()]));
             }
         }
-
-        try {
-            $stmt->execute();
-            Transaction::commit();
-            return true;
-        } catch (Exception $ex) {
-            $this->addLog($ex->getMessage());
-            Transaction::rollback();
-            return false;
-        }
+        
+        return $this->executeStmt($stmt);
     }
 
     public function delete($aDados) {
-        $oDelete = new SqlDelete();
+        $oDelete = new \Db\SqlDelete();
         $oDelete->setEntity($this->getTableName());
 
-        $oCriteria = new Criteria();
+        $oCriteria = new \Db\Criteria();
         foreach ($this->mapping as $oMap) {
             if ($oMap->getTableKey() && isset($aDados[$oMap->getNameClass()])) {
                 $oCriteria->add(new Filter($oMap->getNameDb(), Filter::IGUAL, ':' . $oMap->getNameDb(), false, true));
@@ -124,7 +97,11 @@ abstract class Persistence extends PersistenceMapper {
                 $stmt->bindValue(':' . $oMap->getNameDb(), $aDados[$oMap->getNameClass()], $this->bindType($aDados[$oMap->getNameClass()]));
             }
         }
-
+        
+        return $this->executeStmt($stmt);
+    }
+    
+    private function executeStmt($stmt) {
         try {
             $stmt->execute();
             Transaction::commit();
@@ -133,7 +110,7 @@ abstract class Persistence extends PersistenceMapper {
             $this->addLog($ex->getMessage());
             Transaction::rollback();
             return false;
-        }
+        }        
     }
 
     /**
@@ -141,14 +118,14 @@ abstract class Persistence extends PersistenceMapper {
      * @return \ModelIterator
      */
     public function getAllFromTable() {
-        $oSelect = new SqlSelect();
+        $oSelect = new \Db\SqlSelect();
         $oSelect->setEntity($this->getTableName());
         $oSelect->addColumn('*');
 
         Transaction::open();
         $stmt = Transaction::get()->prepare($oSelect->getInstruction());
 
-        return new ModelIterator($this, $stmt);
+        return new \Db\ModelIterator($this, $stmt);
     }
 
     /**
@@ -157,7 +134,7 @@ abstract class Persistence extends PersistenceMapper {
      * @return Object
      */
     public function findById($aId) {
-        $oSelect = new Query($this);
+        $oSelect = new \Db\Query($this);
         $oSelect->addColumn('*');
 
         foreach ($this->mapping as $oMap) {
@@ -174,7 +151,7 @@ abstract class Persistence extends PersistenceMapper {
      * @return Object
      */
     public function findColumns(array $aCols, Array $aId) {
-        $oSelect = new Query($this);
+        $oSelect = new \Db\Query($this);
         $oSelect->addColumn(implode(',', $aCols));
 
         foreach ($this->mapping as $oMap) {
@@ -186,8 +163,8 @@ abstract class Persistence extends PersistenceMapper {
     }
 
     public function getAllFromTableAsJson($iLimit, $iOffset, array $aOrder = array()) {
-        $oQryCount = new Query($this);       
-        $oQryData = new Query($this);
+        $oQryCount = new \Db\Query($this);       
+        $oQryData = new \Db\Query($this);
         if (count($aOrder)) {
             $oQryData->addOrderBy(implode(',', $aOrder));
         }
